@@ -46,7 +46,6 @@ trakr session --all
 trakr session start
 trakr session pause
 trakr session stop
-
 ```
 
 TODO commands for directly:

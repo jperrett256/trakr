@@ -1,32 +1,77 @@
 import argparse
 
-parser = argparse.ArgumentParser(   prog='trakr',       \
+parser = argparse.ArgumentParser(   prog='trakr',           \
                                     description='Tracks time spent.')
-subparsers = parser.add_subparsers( required=True,      \
-                                    dest='cmd',         \
-                                    title='commands',   \
-                                    help='additional help') # TODO fix help
+subparsers = parser.add_subparsers( required=True,          \
+                                    dest='cmd',             \
+                                    metavar='command')
 
 # parse task subcommand
-parser_task = subparsers.add_parser('task')
-parser_task.add_argument('name', nargs='?')
+parser_task = subparsers.add_parser('task',                 \
+                                    description='''
+                                        Manages task names.
+                                        Will show all tasks if run without arguments.
+                                    ''',                    \
+                                    help='manage tasks')
 
 group_task_options = parser_task.add_mutually_exclusive_group()
-group_task_options.add_argument('-d', action='store_true',  \
-                                help='delete current task')
-group_task_options.add_argument('-D', action='store_true',  \
-                                help='force delete current task')
-group_task_options.add_argument('-m', action='store_true',  \
+group_task_options.add_argument('-c', '--create',           \
+                                metavar='name',             \
+                                help='create new task')
+group_task_options.add_argument('-d', '--delete',           \
+                                metavar='name',             \
+                                help='delete a task')
+group_task_options.add_argument('-D', '--force-delete',     \
+                                metavar='name',             \
+                                help='force delete a task')
+group_task_options.add_argument('-m', '--rename',           \
+                                metavar='name',             \
                                 help='rename current task')
 
 # parse switch subcommand
-parser_switch = subparsers.add_parser('switch')
+parser_switch = subparsers.add_parser(  'switch',           \
+                                        description='TODO', \
+                                        help='change current task')
 
-parser_log = subparsers.add_parser('log')
+parser_switch.add_argument( 'name', nargs=1)
 
-parser_session = subparsers.add_parser('session')
+# parse log subcommand
+parser_log = subparsers.add_parser( 'log',                  \
+                                    help='show previous session data for current task')
 
-parser_edit = subparsers.add_parser('edit')
+# parse session subcommand
+parser_session = subparsers.add_parser( 'session',          \
+                                        description='TODO', \
+                                        help='manage ongoing sessions')
+
+# TODO make --all and subcommands mutually exclusive
+
+parser_session.add_argument('-a', '--all',                  \
+                            action='store_true',            \
+                            help='show all ongoing sessions')
+
+parser_session_cmds = parser_session.add_subparsers(title='options',        \
+                                                    dest='session_cmd',     \
+                                                    metavar='subcommand')
+
+parser_session_cmds.add_parser( 'start',            \
+                                description='TODO', \
+                                help='start new session or resume current session')
+
+parser_session_cmds.add_parser( 'pause',            \
+                                description='TODO', \
+                                help='pause current session')
+
+parser_session_cmds.add_parser( 'stop',             \
+                                description='TODO', \
+                                help='stop current session')
+
+# parse edit subcommand
+parser_edit = subparsers.add_parser('edit',             \
+                                    description='TODO', \
+                                    help='edit session data')
+
+# TODO move parser to separate module?
 
 args = parser.parse_args()
 
