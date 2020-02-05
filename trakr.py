@@ -30,10 +30,14 @@ group_task_options.add_argument('-m', '--rename',           \
 
 # parse switch subcommand
 parser_switch = subparsers.add_parser(  'switch',           \
-                                        description='TODO', \
                                         help='change current task')
 
-parser_switch.add_argument( 'name', nargs=1)
+parser_switch.add_argument( 'name',                         \
+                            help='task name to switch to')
+
+parser_switch.add_argument( '-c', '--create',               \
+                            action='store_true',            \
+                            help='create task if it does not exist')
 
 # parse log subcommand
 parser_log = subparsers.add_parser( 'log',                  \
@@ -41,35 +45,35 @@ parser_log = subparsers.add_parser( 'log',                  \
 
 # parse session subcommand
 parser_session = subparsers.add_parser( 'session',          \
-                                        description='TODO', \
                                         help='manage ongoing sessions')
-
-# TODO make --all and subcommands mutually exclusive
-
-parser_session.add_argument('-a', '--all',                  \
-                            action='store_true',            \
-                            help='show all ongoing sessions')
 
 parser_session_cmds = parser_session.add_subparsers(title='options',        \
                                                     dest='session_cmd',     \
                                                     metavar='subcommand')
 
+parser_session_info =   \
+    parser_session_cmds.add_parser( 'info',         \
+                                    help='show current session')
+
+parser_session_info.add_argument('-a', '--all',                  \
+                            action='store_true',            \
+                            help='show all ongoing sessions')
+
 parser_session_cmds.add_parser( 'start',            \
-                                description='TODO', \
                                 help='start new session or resume current session')
 
 parser_session_cmds.add_parser( 'pause',            \
-                                description='TODO', \
                                 help='pause current session')
 
 parser_session_cmds.add_parser( 'stop',             \
-                                description='TODO', \
                                 help='stop current session')
 
 # parse edit subcommand
 parser_edit = subparsers.add_parser('edit',             \
                                     description='TODO', \
                                     help='edit session data')
+
+# TODO add more for edit subcommand
 
 # TODO move parser to separate module?
 
